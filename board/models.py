@@ -58,7 +58,7 @@ def findview(no):
             from board
             where no = %s;
             '''
-        cursor.execute(sql,(no))
+        cursor.execute(sql,(no,))
 
         # 결과 받아오기
         results = cursor.fetchall()

@@ -47,7 +47,7 @@ def write(request):
 
 
 def view(request):
-    no = request.GET.get('no')
+    no = request.POST.get('no','')
     results = boardmodel.findview(no)
     data = {'viewlist': results}
     return render(request, 'board/view.html', data)
@@ -62,7 +62,7 @@ def deleteform(request):
     return render(request, 'board/deleteform.html')
 
 def delete(request):
-    no = request.GET.get("no")
+    no = request.POST.get('no','')
 
     boardmodel.delete(no)
 

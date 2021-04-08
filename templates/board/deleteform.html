@@ -9,7 +9,7 @@
 				<form class="board-form" method="post" action="/board/delete">
 					{% csrf_token %}
 					<span style="font-size: 20pt">삭제하시겠습니까?</span>
-
+					<input type='hidden' name="no" value="{{ request.GET.no }}">
 					<div class="bottom">
 						<a href="/board">아니요</a>
 						<input type="submit" value="네">
