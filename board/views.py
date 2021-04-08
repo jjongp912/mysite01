@@ -49,7 +49,7 @@ def write(request):
 def view(request):
     no = request.GET.get('no')
     results = boardmodel.findview(no)
-    data = {'boardlist': results}
+    data = {'viewlist': results}
     return render(request, 'board/view.html', data)
 
 def writeform(request):
@@ -62,6 +62,9 @@ def deleteform(request):
     return render(request, 'board/deleteform.html')
 
 def delete(request):
-    no = requst.POST['no']
-    boardmodel.deletebyno(no)
+    no = request.GET.get("no")
+
+    boardmodel.delete(no)
+
     return HttpResponseRedirect('/board')
+

@@ -54,11 +54,11 @@ def findview(no):
 
         # SQL 실행
         sql = '''
-            select *           
+            select no,title,contents           
             from board
-            where no = %s
+            where no = %s;
             '''
-        cursor.execute(sql,(no,))
+        cursor.execute(sql,(no))
 
         # 결과 받아오기
         results = cursor.fetchall()
@@ -101,7 +101,7 @@ def insert(title, contents, hit, g_no, o_no, depth, user_no):
     except OperationalError as e:
         print(f'error: {e}')
 
-def deletebyno(no):
+def delete(no):
     try:
         # 연결
         db = conn()
@@ -110,12 +110,9 @@ def deletebyno(no):
         cursor = db.cursor()
 
         # SQL 실행
-        sql = '''
-                delete 
-                from board
-                where no = %s
-                '''
-        count = cursor.execute(sql, (no))
+        sql = 'delete from board where no = %s;'
+
+        count = cursor.execute(sql,(no,))
 
         # commit
         db.commit()
@@ -129,3 +126,4 @@ def deletebyno(no):
 
     except OperationalError as e:
          print(f'error: {e}')
+
