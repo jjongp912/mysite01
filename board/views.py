@@ -1,14 +1,15 @@
 from math import ceil
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from board import models
+import board.models as boardmodel
 
 LIST_COUNT = 10
 
 
 def index(request):
-    results = models.findall()
+    results = boardmodel.findall()
     data = {"board_list": results}
     return render(request, 'board/index.html', data)
 
@@ -35,9 +36,21 @@ def index(request):
     #
     # return render(request, 'board/index.html')
 
-def view(request):
+def write(request):
+    title = request.POST['title']
+    contents = request.POST['contents']
+    authuser = request.session.get('authuser')
+    user_no = authuser['no']
+    boardmodel.insert(title, contents, '0', '1', '1', '0', user_no)  # title, contents, hit, g_no, o_no, depth, user_no
+    return HttpResponseRedirect('/board')
 
-    return render(request, 'board/view.html')
+
+
+def view(request):
+    no = request.GET.get('no')
+    results = boardmodel.findview(no)
+    data = {'boardlist': results}
+    return render(request, 'board/view.html', data)
 
 def writeform(request):
     return render(request, 'board/writeform.html')
@@ -45,3 +58,10 @@ def writeform(request):
 def updateform(request):
     return render(request, 'board/updateform.html')
 
+def deleteform(request):
+    return render(request, 'board/deleteform.html')
+
+def delete(request):
+    no = requst.POST['no']
+    boardmodel.deletebyno(no)
+    return HttpResponseRedirect('/board')

@@ -27,7 +27,7 @@ def findall():
                 date_format(reg_date, '%Y-%m-%d %h:%i:%s') as reg_date,
                 g_no,o_no,depth,user_no            
             from board
-            order by reg_date desc;
+            order by g_no desc,o_no asc, reg_date desc;
             '''
         cursor.execute(sql)
 
@@ -44,8 +44,38 @@ def findall():
     except OperationalError as e:
         print(f'error: {e}')
 
+def findview(no):
+    try:
+        # 연결
+        db = conn()
 
-def insert(firstname, lastname, email):
+        # cursor 생성
+        cursor = db.cursor(DictCursor)
+
+        # SQL 실행
+        sql = '''
+            select *           
+            from board
+            where no = %s
+            '''
+        cursor.execute(sql,(no,))
+
+        # 결과 받아오기
+        results = cursor.fetchall()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        # 결과 반환
+        return results
+
+    except OperationalError as e:
+        print(f'error: {e}')
+
+
+
+def insert(title, contents, hit, g_no, o_no, depth, user_no):
     try:
         # 연결
         db = conn()
@@ -54,8 +84,8 @@ def insert(firstname, lastname, email):
         cursor = db.cursor()
 
         # SQL 실행
-        sql = 'insert into board values(null, %s, %s, %s, now(), %s, %s, %s, %s,)'
-        count = cursor.execute(sql, (title, contents, hit, g_no, o_no, depth. user_no))
+        sql = 'insert into board values(null, %s, %s, %s, now(), %s, %s, %s, %s);'
+        count = cursor.execute(sql, (title, contents, hit, g_no, o_no, depth, user_no))
 
         # commit
         # insert, update, delete 후 commit 필요
@@ -70,3 +100,32 @@ def insert(firstname, lastname, email):
 
     except OperationalError as e:
         print(f'error: {e}')
+
+def deletebyno(no):
+    try:
+        # 연결
+        db = conn()
+
+        # cursor 생성
+        cursor = db.cursor()
+
+        # SQL 실행
+        sql = '''
+                delete 
+                from board
+                where no = %s
+                '''
+        count = cursor.execute(sql, (no))
+
+        # commit
+        db.commit()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        # 결과 반환
+        return count == 1
+
+    except OperationalError as e:
+         print(f'error: {e}')

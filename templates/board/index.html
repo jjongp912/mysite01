@@ -28,9 +28,9 @@
 							<td>{{ board.name }}</td>
 							<td>{{ board.hit }}</td>
 							<td>{{ board.reg_date }}</td>
-
-							<td><a href="" class="del">삭제</a></td> #자신의 글만 삭제 가능해야함
-
+							{% if authuser.no == board.user_no %}
+							<td><a href="/board/deteform?no={{ board.no }}" class="del">삭제</a></td> #자신의 글만 삭제 가능해야함
+							{% endif %}
 						</tr>
 					{% endfor %}
 

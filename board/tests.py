@@ -1,3 +1,11 @@
 from django.test import TestCase
 
-# Create your tests here.
+# from board import models
+#
+# def view(no):
+#     # no = request.get('no')
+#
+#     results = models.findview(no)
+#     return results
+#         # data = {"board_list": results}
+# print(view(3))
