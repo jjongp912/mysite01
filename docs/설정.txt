@@ -1,0 +1,84 @@
+mysite 장고 프로젝트 만들기
+
+
+1. django library 설피 (터미널)
+    (nenv)# pip install django
+
+2. mysqlclient library 설치
+    (env) # pip install mysqlclient
+
+3. 장고 프로젝트 생성
+    (env) # django-admin startproject django_practices
+
+4. 디렉토리 정리(pycharm 프로젝트랑 장고 프로젝트를 일치시켜 주기)
+
+5. 초기 설정 (setting.py)
+
+    1) time zone 설정
+    TIME_ZONE = 'Asia/Seoul'
+
+    2) databese 설정
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'webdb',
+            'USER': 'webdb',
+            'PASSWORD': 'webdb',
+            'HOST': 'localhost',
+            'PORT':3306
+        }
+    }
+
+    3) DATETIME format 설정 (생략)
+    DATETIME_FORMAT = "Y-m-d P h:i:s"
+    L10N = False
+    USE_TZ = False
+
+6. admin 애플리케이션 삭제하기
+    1) INSTALLED_APPS = [ ... ] 에서 'django.contrib.admin' 삭제
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+                                    ]
+    2)
+
+7. ORM을 적용하고 mysql5.1 인 경우 manage.py 수정
+    from django.db.backends.mysql.base import DatabaseWrapper
+    DatabaseWrapper.data_types['DateTimeField'] = 'datetime'
+
+8. Application등의 통합 template 디렉토리 templates 만들기
+
+
+    1) 디렉토리 생성
+        mysite01
+            |--- templates
+
+    2) template 디렉토리 설정(settings.py)
+
+    import os
+    .
+    .
+    .
+    'DIRS': [os.path.join(BASE_DIR, 'templates')]
+
+9. static 파일 (css, js, images) 설정(settings.py)
+
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'statics'),
+        )
+    STATIC_URL = '/assets/'
+
+
+###########################################
+1) 서버 시작하기
+```shell
+(env) # python manage.py runserver 0.0.0.0:9999
+```
+
+2) 브라우저로 접근하기
+url http://localhost:9999 로 접근
+
+-----------------------------------------------
