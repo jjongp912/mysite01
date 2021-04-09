@@ -54,14 +54,14 @@ def findview(no):
 
         # SQL 실행
         sql = '''
-            select no,title,contents           
+            select no,title,contents,user_no          
             from board
             where no = %s;
             '''
         cursor.execute(sql,(no,))
 
         # 결과 받아오기
-        results = cursor.fetchall()
+        results = cursor.fetchone()  #fetchall() 하면 안됨...
 
         # 자원 정리
         cursor.close()
@@ -127,3 +127,28 @@ def delete(no):
     except OperationalError as e:
          print(f'error: {e}')
 
+def update(title, contents, no):
+    try:
+        # 연결
+        db = conn()
+
+        # cursor 생성
+        cursor = db.cursor()
+
+        # SQL 실행
+        sql = 'update board set title=%s, contents=%s where no=%s'
+        count = cursor.execute(sql, (title, contents, no))
+
+        # commit
+        # insert, update, delete 후 commit 필요
+        db.commit()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        # 결과 반환
+        return count == 1
+
+    except OperationalError as e:
+        print(f'error: {e}')

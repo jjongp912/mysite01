@@ -24,7 +24,7 @@
 					{% for board in board_list %}{% load mathfilters %}
 						<tr>
 							<td>{{ board_list | length | sub:forloop.counter | add:1 }}</td>
-							<td><a href="/board/view?no={{ board.no }}" style="text-align:letf:0px">{{ board.title }}</a></td>
+							<td><a href="/board/view?no={{ board.no }}" style="text-align:letf">{{ board.title }}</a></td>
 							<td>{{ board.name }}</td>
 							<td>{{ board.hit }}</td>
 							<td>{{ board.reg_date }}</td>
@@ -78,9 +78,12 @@
 					</ul>
 				</div>					
 				<!-- pager 추가 -->
-				
+
 				<div class="bottom">
+					{% if request.session.authuser.no not in None %}
 					<a href="/board/writeform" id="new-book">글쓰기</a>
-				</div>				
+					{% endif %}
+				</div>
+
 			</div>
 {% endblock %}

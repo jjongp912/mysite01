@@ -23,8 +23,12 @@
 				</table>
 				<div class="bottom">
 					<a href="/board/">글목록</a>
-					<a href="/board/updateform">글수정</a>
+						{% if request.session.authuser.no == viewlist.user_no %}
+						<a href="/board/updateform?no={{ viewlist.no }}">글수정</a>
+						{% endif %}
+					{% if request.session.authuser.no not in None %}
 					<a href="">답글</a>
+					{% endif %}
 				</div>
 			</div>
 {% endblock %}

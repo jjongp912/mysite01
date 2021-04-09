@@ -36,6 +36,15 @@ def index(request):
     #
     # return render(request, 'board/index.html')
 
+def view(request):
+    no = request.GET['no']
+    results = boardmodel.findview(no)
+    data = {"viewlist": results}
+    return render(request, 'board/view.html', data)
+
+def writeform(request):
+    return render(request, 'board/writeform.html')
+
 def write(request):
     title = request.POST['title']
     contents = request.POST['contents']
@@ -44,19 +53,16 @@ def write(request):
     boardmodel.insert(title, contents, '0', '1', '1', '0', user_no)  # title, contents, hit, g_no, o_no, depth, user_no
     return HttpResponseRedirect('/board')
 
-
-
-def view(request):
-    no = request.POST.get('no','')
-    results = boardmodel.findview(no)
-    data = {'viewlist': results}
-    return render(request, 'board/view.html', data)
-
-def writeform(request):
-    return render(request, 'board/writeform.html')
-
 def updateform(request):
     return render(request, 'board/updateform.html')
+
+def update(request):
+    no = request.POST['no']
+    title = request.POST['title']
+    contents = request.POST['contents']
+    boardmodel.update(title, contents, no)
+    return HttpResponseRedirect('/board')
+
 
 def deleteform(request):
     return render(request, 'board/deleteform.html')
