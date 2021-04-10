@@ -26,7 +26,7 @@
 						{% if request.session.authuser.no == viewlist.user_no %}
 						<a href="/board/updateform?no={{ viewlist.no }}">글수정</a>
 						{% endif %}
-					{% if request.session.authuser.no not in None %}
+					{% if request.session.authuser.no != None %}
 					<a href="">답글</a>
 					{% endif %}
 				</div>

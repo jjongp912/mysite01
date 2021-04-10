@@ -80,10 +80,12 @@
 				<!-- pager 추가 -->
 
 				<div class="bottom">
-					{% if request.session.authuser.no not in None %}
+					{% if request.session.authuser.no != None %}
 					<a href="/board/writeform" id="new-book">글쓰기</a>
 					{% endif %}
 				</div>
 
 			</div>
 {% endblock %}
+
+
