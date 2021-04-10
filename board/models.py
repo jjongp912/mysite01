@@ -23,10 +23,12 @@ def findall():
 
         # SQL 실행
         sql = '''
-            select no,title,contents,hit,
-                date_format(reg_date, '%Y-%m-%d %h:%i:%s') as reg_date,
-                g_no,o_no,depth,user_no            
+            select board.no, board.title, board.contents, board.hit,
+                date_format(board.reg_date, '%Y-%m-%d %h:%i:%s') as reg_date,
+                board.g_no, board.o_no, board.depth, board.user_no, user.name            
             from board
+            left join user
+            on board.user_no = user.no
             order by g_no desc,o_no asc, reg_date desc;
             '''
         cursor.execute(sql)
