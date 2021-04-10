@@ -48,13 +48,26 @@ def logout(request):
 
 def updateform(request):
     # Access Control(접근 제어)
-    if 'authuser' not in request.session:
+    authuser = request.session.get("authuser")
+    if authuser is None:
         return HttpResponseRedirect('/')
 
-    authuser = request.session["authuser"]
-    result = models.findbyno(authuser["no"])
-    return render(request, 'user/updateform.html')
+    no = request.session['authuser']['no']
+
+    # 1. 데이터를 가져오기
+    result = models.findbyno(no)
+    data = {'user': result}
+
+    return render(request, 'user/updateform.html', data)
 
 
 def update(request):
-    pass
+    no = request.session['authuser']['no']
+    name = request.POST['name']
+    password = request.POST['password']
+    gender = request.POST['gender']
+
+    models.update(no, name, password, gender)
+    request.session['authuser'] = {'no': no, 'name': name}
+
+    return HttpResponseRedirect('/')

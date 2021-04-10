@@ -2,8 +2,23 @@ from MySQLdb import connect, OperationalError
 from MySQLdb.cursors import DictCursor
 
 
-def findbyno():
-    pass
+def findbyno(no):
+    try:
+        db = conn()
+        cursor = db.cursor(DictCursor)
+
+        sql = 'select no, name, email, gender from user where no=%s'
+        cursor.execute(sql, (no,))
+        result = cursor.fetchone()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        return result
+
+    except OperationalError as e:
+        print(f'error: {e}')
 
 
 def findby_email_and_password(email, password):
@@ -58,8 +73,35 @@ def insert(name, email, password, gender):
         print(f'error: {e}')
 
 
-def update(name, password):
-    pass
+def update(no, name, password, gender):
+    try:
+        db = conn()
+        cursor = db.cursor()
+
+        if password == '':
+            sql = '''
+                update user
+                set name=%s, gender=%s
+                where no=%s 
+            '''
+            t = (name, gender, no)
+        else:
+            sql = '''
+                update user
+                set name=%s, password=%s, gender=%s
+                where no=%s 
+            '''
+            t = (name, password, gender, no)
+
+        cursor.execute(sql, t)
+        db.commit()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+    except OperationalError as e:
+        print(f'error: {e}')
 
 
 def conn():
